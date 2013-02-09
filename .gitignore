@@ -1,0 +1,13 @@
+#java specific
+*.class
+
+#eclipse private settings
+.project
+.settings/
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
