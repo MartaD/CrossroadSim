@@ -1,7 +1,8 @@
-package nagSchreckModel;
+package chowShadModel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.util.LinkedList;
 
 import javax.swing.JComponent;
 
@@ -12,25 +13,37 @@ import javax.swing.JComponent;
 public class Board extends JComponent{
 	private static final long serialVersionUID = 1L;
 	private Point[][] points;
-	private TrafficLights lights;
+	private LinkedList<TrafficLights> lights;
 	private int size = 14;
 	private int iteration=0;
-	private int spawn = 3, lightsChange = 4; 
+	private int spawn = 4; 
 
 	// single iteration
 	public void iteration() {
 		iteration++;
 
 		//lights change
-		if(iteration%lightsChange==0) {
-			lights.changeLight();
+		for(TrafficLights l: lights){
+			if(iteration%l.getChangeTime()==0) {
+				l.changeLight();
+			}
 		}
 		
 		//car spawn
 		if(iteration%spawn==0) {
 //			points[3][0].setSpeed(0);
 //			points[2][6].setSpeed(0);
-			points[0][6].setSpeed(0);
+			points[0][10].setSpeed(0);
+			points[0][10].setHorizontal(true);
+			points[1][10].setSpeed(0);
+			points[1][10].setHorizontal(true);
+			points[2][10].setSpeed(0);
+			points[2][10].setHorizontal(true);
+			
+			points[12][0].setSpeed(0);
+			points[12][0].setHorizontal(false);
+			points[12][2].setSpeed(0);
+			points[12][2].setHorizontal(false);
 		}
 
 		//acceleration
@@ -61,7 +74,28 @@ public class Board extends JComponent{
 			for (int y = 0; y < points[x].length; ++y) {
 				if(points[x][y].getSpeed()!=null){
 					int speed = points[x][y].getSpeed();
-					points[x+speed][y].setNextSpeed(speed);
+					
+					if(points[x][y].isHorizontal()){
+						if(points[x+speed][y].getNextSpeed()==null){
+							points[x+speed][y].setNextSpeed(speed);
+							points[x+speed][y].setHorizontal(true);
+						}
+						else {
+							points[x][y].setNextSpeed(0);
+							speed = 0;
+						}
+					}
+					else {
+						if(points[x][y+speed].getNextSpeed()==null){
+							points[x][y+speed].setNextSpeed(speed);
+							points[x][y+speed].setHorizontal(false);
+						}
+						else {
+							points[x][y].setNextSpeed(0);
+							speed = 0;
+						}
+					}
+					
 					if( speed!=0){
 						points[x][y].setNextSpeed(null);
 						points[x][y].setDist(null);
@@ -87,7 +121,9 @@ public class Board extends JComponent{
 
 	public void initialize(int length, int height) {
 		points = new Point[25][25];
-		lights = new TrafficLights();
+		lights = new LinkedList<TrafficLights>();
+		lights.add(new TrafficLights(11, 10, 6, true, true));
+		lights.add(new TrafficLights(12, 8, 6, false, false));
 
 		for (int x = 0; x < points.length; ++x)
 			for (int y = 0; y < points[x].length; ++y){
@@ -132,7 +168,10 @@ public class Board extends JComponent{
 			for (y = 0; y < points[x].length; ++y) {
 				if (points[x][y].getSpeed() != null) {
 					// TODO: set the proper color of the cell
-					g.setColor(new Color(0x0000ff));
+					if(points[x][y].isHorizontal())
+						g.setColor(new Color(0x0000ff));
+					else
+						g.setColor(Color.cyan);
 					g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
 					
 					
@@ -141,8 +180,12 @@ public class Board extends JComponent{
 		}
 		
 		//Traffic lights
-		g.setColor(lights.isGreen()?Color.GREEN:Color.RED);
-		g.fillRect((lights.getLocation() * size) + 1, ((lights.getY()+1) * size) + 1, (size - 1), (size - 1));
-
+		for(TrafficLights l:lights){
+			g.setColor(l.isGreen()?Color.GREEN:Color.RED);
+			if(l.isHorizontal())
+				g.fillRect((l.getLocation() * size) + 1, ((l.getY()+1) * size) + 1, (size - 1), (size - 1));
+			else
+				g.fillRect(((l.getLocation()-1) * size) + 1, (l.getY() * size) + 1, (size - 1), (size - 1));
+		}
 	}
 }

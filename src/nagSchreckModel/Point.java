@@ -5,7 +5,6 @@ public class Point {
 	private Integer currSpeed;
 	private Integer nextSpeed;
 	private Integer dist;
-	private boolean horizontal=true;
 	
 	
 	public Point() {
@@ -91,14 +90,6 @@ public class Point {
 		dist = null;
 		currSpeed = null;
 		nextSpeed = null;
-	}
-	
-	public void setHorizontal(boolean hor){
-		this.horizontal = hor;
-	}
-
-	public boolean isHorizontal() {
-		return horizontal;
 	}
 	
 }
