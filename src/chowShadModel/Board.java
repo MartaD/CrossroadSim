@@ -44,6 +44,9 @@ public class Board extends JComponent{
 			points[12][0].setHorizontal(false);
 			points[12][2].setSpeed(0);
 			points[12][2].setHorizontal(false);
+			
+			points[18][1].setSpeed(0);
+			points[18][1].setHorizontal(false);
 		}
 
 		//acceleration
@@ -75,6 +78,9 @@ public class Board extends JComponent{
 				if(points[x][y].getSpeed()!=null){
 					int speed = points[x][y].getSpeed();
 					
+					points[x][y].setNextSpeed(null);
+					points[x][y].setDist(null);
+					
 					if(points[x][y].isHorizontal()){
 						if(points[x+speed][y].getNextSpeed()==null){
 							points[x+speed][y].setNextSpeed(speed);
@@ -94,11 +100,6 @@ public class Board extends JComponent{
 							points[x][y].setNextSpeed(0);
 							speed = 0;
 						}
-					}
-					
-					if( speed!=0){
-						points[x][y].setNextSpeed(null);
-						points[x][y].setDist(null);
 					}
 				}
 			}
@@ -122,8 +123,11 @@ public class Board extends JComponent{
 	public void initialize(int length, int height) {
 		points = new Point[25][25];
 		lights = new LinkedList<TrafficLights>();
-		lights.add(new TrafficLights(11, 10, 6, true, true));
+		lights.add(new TrafficLights(10, 10, 6, true, true));
+		lights.add(new TrafficLights(16, 10, 6, true, false));
 		lights.add(new TrafficLights(12, 8, 6, false, false));
+		lights.add(new TrafficLights(12, 12, 10, false, true));
+		lights.add(new TrafficLights(18, 8, 6, false, true));
 
 		for (int x = 0; x < points.length; ++x)
 			for (int y = 0; y < points[x].length; ++y){
@@ -167,14 +171,14 @@ public class Board extends JComponent{
 		for (x = 0; x < points.length; ++x) {
 			for (y = 0; y < points[x].length; ++y) {
 				if (points[x][y].getSpeed() != null) {
-					// TODO: set the proper color of the cell
+					
 					if(points[x][y].isHorizontal())
 						g.setColor(new Color(0x0000ff));
 					else
 						g.setColor(Color.cyan);
 					g.fillRect((x * size) + 1, (y * size) + 1, (size - 1), (size - 1));
-					
-					
+					g.setColor(Color.white);
+					g.drawString(points[x][y].getSpeed().toString(), (x * size) + 1, (y * size) + size);
 				}
 			}
 		}

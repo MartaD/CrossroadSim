@@ -7,7 +7,7 @@ public class Point {
 	private Integer currSpeed;
 	private Integer nextSpeed;
 	private Integer dist;
-	private boolean horizontal;
+	private boolean horizontal = true;
 	
 	public Point() {
 		currSpeed = null;
@@ -54,6 +54,9 @@ public class Point {
 	}
 	
 	public void brake(int x, int y, Point[][] points, LinkedList<TrafficLights> lights){
+		Integer lightDist = new Integer(0);
+		TrafficLights nearestLights = null;
+		
 		if(horizontal){
 			//end of board
 			if(x+currSpeed>=points.length){
@@ -61,28 +64,30 @@ public class Point {
 				
 				return;
 			}
-			for(int i=++x;i<points.length;i++){
-				//closest vehicle
+			
+			//calculating distance to nearest vehicle
+			for(int i=(x+1);i<points.length;i++){
 				if(points[i][y].getSpeed()!=null){
-					dist=(i-x);
+					dist=((i-x)-1)>=0?(i-x)-1:null;
 					break;
 				}
 			}
 			if(dist==null)
 				dist = new Integer(points.length-1);
 			
-			Integer lightDist = new Integer(0);
-			lightDist = lights.getFirst().getLocation()-x>=0?lights.getFirst().getLocation()-x:null;
-			
-			
-			if(lights.getFirst().isGreen() || lightDist==null){
-				if(dist!=null && currSpeed.compareTo(dist)>0)
-					currSpeed=dist;
+			//calculating distance to nearest traffic lights
+			for(TrafficLights l:lights){
+				if(l.getLocation()>=x && l.getY() == y && l.isHorizontal()){
+					nearestLights=l;
+					break;
+				}
 			}
-			else {
-				if(dist!=null && currSpeed.compareTo(Math.min(dist==null?100:dist, lightDist))>0)
-					currSpeed=Math.min(dist, lightDist);
-			}
+			
+			if(nearestLights!=null)
+				lightDist = nearestLights.getLocation()-x>=0?nearestLights.getLocation()-x:null;
+			else
+				lightDist = null;	
+			
 		}
 		else {
 			//end of board
@@ -90,27 +95,38 @@ public class Point {
 				this.remove();
 				return;
 			}
-			for(int i=++y;i<points.length;i++){
-				//closest vehicle
+			
+			//calculating distance to nearest vehicle
+			for(int i=(y+1);i<points.length;i++){
 				if(points[x][i].getSpeed()!=null){
-					dist=(i-y);
+					dist=((i-y)-1)>=0?(i-y)-1:null;
 					break;
 				}
 			}
 			if(dist==null)
-				dist = new Integer(points.length-1);
-				
-			Integer lightDist = new Integer(0);
-			lightDist = lights.getLast().getY()-y>=0?lights.getLast().getY()-y:null;
-				
-			if(lights.getLast().isGreen() || lightDist==null){
-				if(dist!=null && currSpeed.compareTo(dist)>0)
-					currSpeed=dist;
+				dist = new Integer(points[x].length-1);
+			
+			//calculating distance to nearest traffic lights
+			for(TrafficLights l:lights){
+				if(l.getY()>=y && l.getLocation()==x && !l.isHorizontal()){
+					nearestLights=l;
+					break;
+				}
 			}
-			else {
-				if(dist!=null && currSpeed.compareTo(Math.min(dist==null?100:dist, lightDist))>0)
-					currSpeed=Math.min(dist, lightDist);
-			}
+			if(nearestLights!=null)
+				lightDist = nearestLights.getY()-y>=0?nearestLights.getY()-y:null;
+			else
+				lightDist = null;	
+		}
+		
+		//speed modification
+		if(lightDist==null || nearestLights.isGreen()){
+			if(dist!=null)
+				currSpeed=Math.min(dist, currSpeed);
+		}
+		else {
+			if(dist!=null && currSpeed.compareTo(Math.min(dist, lightDist))>0)
+				currSpeed=Math.min(dist, lightDist);
 		}
 	}
 	

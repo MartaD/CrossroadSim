@@ -31,7 +31,7 @@ public class Program extends JFrame {
 		while(true){
 			try {
 				Thread.currentThread();
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 			}
 			board.iteration();
