@@ -59,7 +59,7 @@ public class Menu extends JPanel {
 			"9", "10" };
 
 	// simulation variables
-	private int simulationSpeed = 100;
+	private int simulationSpeed = 1;
 	private int blueCars;
 	private int lightBlueCars;
 	private int grayCars;
@@ -70,7 +70,7 @@ public class Menu extends JPanel {
 
 	public Menu(JFrame frame) {
 		this.frame = frame;
-		timer = new Timer(simulationSpeed * 10, new ActionListener() {
+		timer = new Timer(1000, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,7 +95,7 @@ public class Menu extends JPanel {
 		container.setSize(400, 400);
 
 		panelMenu = new JPanel();
-		panelMenu.setLayout(new GridLayout(22, 2));
+		panelMenu.setLayout(new GridLayout(15, 2));
 
 		buttonStart = new Button("Start simulation");
 		buttonStop = new Button("Stop simulation");
@@ -129,11 +129,11 @@ public class Menu extends JPanel {
 		comboBoxChangeLight = new JComboBox<>(changeLight);
 		comboBoxChangeLight.setSelectedIndex(4);
 
-		sliderSimulationSleep = new JSlider(0, 100, 100);
+		sliderSimulationSleep = new JSlider(1, 5, 1);
 		sliderSimulationSleep.setPaintLabels(true);
 		sliderSimulationSleep.setPaintTicks(true);
-		sliderSimulationSleep.setMajorTickSpacing(20);
-		sliderSimulationSleep.setMinorTickSpacing(10);
+		sliderSimulationSleep.setMajorTickSpacing(1);
+		sliderSimulationSleep.setMinorTickSpacing(1);
 
 		textLeftCars = new JTextField();
 		textLeftCars.setText(" " + 0);
@@ -167,17 +167,17 @@ public class Menu extends JPanel {
 		panelMenu.add(labelRoadConditions);
 		panelMenu.add(comboBoxConditions);
 
+		panelMenu.add(labelChangeLight);
+		panelMenu.add(comboBoxChangeLight);
+
 		panelMenu.add(labelLeftCars);
 		panelMenu.add(textLeftCars);
 
 		panelMenu.add(labelCarsOnCrossroad);
 		panelMenu.add(textCarsOnCrossroad);
 
-		panelMenu.add(labelAvgSpeed);
-		panelMenu.add(textAverageSpeed);
-
-		panelMenu.add(labelChangeLight);
-		panelMenu.add(comboBoxChangeLight);
+		// panelMenu.add(labelAvgSpeed);
+		// panelMenu.add(textAverageSpeed);
 
 		board = new Board();
 		board.initialize(30, 30);
@@ -225,7 +225,7 @@ public class Menu extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				simulationSpeed = sliderSimulationSleep.getValue();
-				timer.setDelay(simulationSpeed * 10);
+				timer.setDelay(1000 / simulationSpeed);
 			}
 		});
 	}

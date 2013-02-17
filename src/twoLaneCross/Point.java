@@ -46,7 +46,7 @@ public class Point {
 		}
 		sumOfSpeeds += currSpeed;
 		++numOfSpeeds;
-		avgSpeed = sumOfSpeeds / numOfSpeeds;
+
 	}
 
 	public void setNextSpeed(Integer speed) {
@@ -73,10 +73,14 @@ public class Point {
 
 	public void accelerate(int maxSpeed) {
 		currSpeed = Math.min(maxSpeed, currSpeed + 1);
+		sumOfSpeeds += currSpeed;
+		++numOfSpeeds;
 	}
 
 	public void randomBrake() {
 		currSpeed = Math.max(0, currSpeed - 1);
+		sumOfSpeeds += currSpeed;
+		++numOfSpeeds;
 	}
 
 	public void brake(int x, int y, Point[][] points,
@@ -236,12 +240,18 @@ public class Point {
 		// speed modification
 		if (lightDist == null
 				|| (nearestLights != null && nearestLights.isGreen())) {
-			if (dist != null)
+			if (dist != null) {
 				currSpeed = Math.min(dist, currSpeed);
+				sumOfSpeeds += currSpeed;
+				++numOfSpeeds;
+			}
 		} else {
 			if (dist != null
-					&& currSpeed.compareTo(Math.min(dist, lightDist)) > 0)
+					&& currSpeed.compareTo(Math.min(dist, lightDist)) > 0) {
 				currSpeed = Math.min(dist, lightDist);
+				sumOfSpeeds += currSpeed;
+				++numOfSpeeds;
+			}
 		}
 	}
 

@@ -24,7 +24,7 @@ public class Program extends JFrame {
 		menu = new Menu(this);
 		menu.initialize(this.getContentPane());
 
-		this.setSize(900, 800);
+		this.setSize(900, 600);
 		this.setVisible(true);
 
 	}
