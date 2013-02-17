@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -24,6 +25,7 @@ public class Board extends JPanel {
 	private static final int YELLOW_ROW = 15;
 	private static int totalSpeed;
 	private static int totalGeneratedCars;
+	private Random rand = new Random();
 
 	// single iteration
 	public void iteration(int blueCars, int lightBlueCars, int yellowCars,
@@ -71,7 +73,7 @@ public class Board extends JPanel {
 				yellowCol = yellowCol - 2;
 				totalGeneratedCars++;
 			}
-			
+
 		}
 
 		// acceleration
@@ -93,12 +95,12 @@ public class Board extends JPanel {
 		for (int x = 0; x < points.length; ++x)
 			for (int y = 0; y < points[x].length; ++y) {
 				if (points[x][y].getSpeed() != null) {
-					if (conditions == 1) {
-
-					} else if (conditions == 2) {
-
-					} else if (conditions == 3) {
-
+					if (conditions == 1 && rand.nextInt(101) % 2 == 0) {
+						points[x][y].randomBrake();
+					} else if (conditions == 2 && rand.nextInt(101) % 4 == 0) {
+						points[x][y].randomBrake();
+					} else if (conditions == 3 && rand.nextInt(101) % 10 == 0) {
+						points[x][y].randomBrake();
 					}
 
 				}
@@ -110,7 +112,6 @@ public class Board extends JPanel {
 				if (points[x][y].getSpeed() != null) {
 					int speed = points[x][y].getSpeed();
 					totalSpeed += points[x][y].getAvgSpeed();
-					
 
 					points[x][y].setNextSpeed(null);
 					points[x][y].setDist(null);

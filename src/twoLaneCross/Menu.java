@@ -65,7 +65,7 @@ public class Menu extends JPanel {
 
 	public Menu(JFrame frame) {
 		this.frame = frame;
-		timer = new Timer(1000, new ActionListener() {
+		timer = new Timer(simulationSpeed * 10, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -96,7 +96,7 @@ public class Menu extends JPanel {
 		buttonStop = new Button("Stop simulation");
 		buttonPause = new Button("Pause simulation");
 
-		labelMenu = new Label("Menu");
+		labelMenu = new Label("Crossroad simulation menu");
 
 		labelBlueCars = new Label("Blue cars traffic");
 		labelLightBlueCars = new Label("Lightblue cars traffic");
@@ -105,7 +105,7 @@ public class Menu extends JPanel {
 
 		labelSimulationSpeed = new Label("Simulation speed");
 		labelMaxSpeed = new Label("Max speed");
-		labelRoadConditions = new Label("Conditions");
+		labelRoadConditions = new Label("Road onditions");
 		labelLeftCars = new Label("Cars that left crossroad");
 		labelAvgSpeed = new Label("Average speed");
 		labelCarsOnCrossroad = new Label("Cars on crossroad");
@@ -160,12 +160,14 @@ public class Menu extends JPanel {
 
 		panelMenu.add(labelLeftCars);
 		panelMenu.add(textLeftCars);
+		
+		panelMenu.add(labelCarsOnCrossroad);
+		panelMenu.add(textCarsOnCrossroad);
 
 		panelMenu.add(labelAvgSpeed);
 		panelMenu.add(textAverageSpeed);
 
-		panelMenu.add(labelCarsOnCrossroad);
-		panelMenu.add(textCarsOnCrossroad);
+
 
 		board = new Board();
 		board.initialize(30, 30);
@@ -212,6 +214,7 @@ public class Menu extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				simulationSpeed = sliderSimulationSleep.getValue();
+				timer.setDelay(simulationSpeed * 10);
 			}
 		});
 	}

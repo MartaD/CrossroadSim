@@ -47,8 +47,6 @@ public class Point {
 		sumOfSpeeds += currSpeed;
 		++numOfSpeeds;
 		avgSpeed = sumOfSpeeds / numOfSpeeds;
-		System.out.println("sum " + sumOfSpeeds + " num " + numOfSpeeds
-				+ " avg " + avgSpeed);
 	}
 
 	public void setNextSpeed(Integer speed) {
