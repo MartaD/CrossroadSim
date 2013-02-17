@@ -166,6 +166,11 @@ public class Board extends JPanel {
 				if (points[x][y] != null)
 					points[x][y].remove();
 			}
+		Point.setTotalNumberOfCars(0);
+		Board.setTotalSpeed(0);
+		Board.setTotalGeneratedCars(0);
+		
+		
 		this.paintComponent(this.getGraphics());
 		// this.repaint();
 	}
@@ -234,7 +239,7 @@ public class Board extends JPanel {
 						g.setColor(Color.magenta);
 
 					} else if (points[x][y].getType() == 4) {
-						g.setColor(Color.yellow);
+						g.setColor(Color.GRAY);
 					}
 
 					g.fillRect((x * size) + 1, (y * size) + 1, (size - 1),
