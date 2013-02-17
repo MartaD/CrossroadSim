@@ -29,12 +29,12 @@ public class Board extends JPanel {
 
 	// single iteration
 	public void iteration(int blueCars, int lightBlueCars, int yellowCars,
-			int pinkCars, int maxSpeed, int conditions) {
+			int pinkCars, int maxSpeed, int conditions, int changeLight) {
 		iteration++;
 
 		// lights change
 		for (TrafficLights l : lights) {
-			if (iteration % l.getChangeTime() == 0) {
+			if (iteration % changeLight == 0) {
 				l.changeLight();
 			}
 		}
@@ -169,8 +169,7 @@ public class Board extends JPanel {
 		Point.setTotalNumberOfCars(0);
 		Board.setTotalSpeed(0);
 		Board.setTotalGeneratedCars(0);
-		
-		
+
 		this.paintComponent(this.getGraphics());
 		// this.repaint();
 	}
@@ -186,7 +185,7 @@ public class Board extends JPanel {
 		lights.add(new TrafficLights(16, 13, 6, 3, true));
 		// for yellow cars
 		lights.add(new TrafficLights(15, 15, 6, 4, false));
-		lights.add(new TrafficLights(15, 9, 4, 4, true));
+		// lights.add(new TrafficLights(15, 9, 4, 4, true));
 
 		for (int x = 0; x < points.length; ++x)
 			for (int y = 0; y < points[x].length; ++y) {

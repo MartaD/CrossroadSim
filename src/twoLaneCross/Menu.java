@@ -38,12 +38,14 @@ public class Menu extends JPanel {
 	private Label labelLeftCars;
 	private Label labelAvgSpeed;
 	private Label labelCarsOnCrossroad;
+	private Label labelChangeLight;
 	private JComboBox comboBoxBlueCars;
 	private JComboBox comboBoxLightBlueCars;
 	private JComboBox comboBoxGrayCars;
 	private JComboBox comboBoxPinkCars;
 	private JComboBox comboBoxMaxSpeed;
 	private JComboBox comboBoxConditions;
+	private JComboBox comboBoxChangeLight;
 	private JTextField textLeftCars;
 	private JTextField textAverageSpeed;
 	private JTextField textCarsOnCrossroad;
@@ -53,6 +55,8 @@ public class Menu extends JPanel {
 	private String[] trafficTypes = { "small", "average", "high" };
 	private String[] speed = { "1", "2", "3", "4", "5" };
 	private String[] conditionTypes = { "bad", "medium", "good" };
+	private String[] changeLight = { "1", "2", "3", "4", "5", "6", "7", "8",
+			"9", "10" };
 
 	// simulation variables
 	private int simulationSpeed = 100;
@@ -62,6 +66,7 @@ public class Menu extends JPanel {
 	private int pinkCars;
 	private int maxSpeed;
 	private int conditions;
+	private int changeLightFreq;
 
 	public Menu(JFrame frame) {
 		this.frame = frame;
@@ -70,7 +75,7 @@ public class Menu extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.iteration(blueCars, lightBlueCars, grayCars, pinkCars,
-						maxSpeed, conditions);
+						maxSpeed, conditions, changeLightFreq);
 				textLeftCars.setText(" " + Point.getTotalNumberOfCars());
 				if (Point.getTotalNumberOfCars() != 0)
 					textAverageSpeed.setText(" "
@@ -109,6 +114,7 @@ public class Menu extends JPanel {
 		labelLeftCars = new Label("Cars that left crossroad");
 		labelAvgSpeed = new Label("Average speed");
 		labelCarsOnCrossroad = new Label("Cars on crossroad");
+		labelChangeLight = new Label("Change light freq.");
 
 		comboBoxBlueCars = new JComboBox(trafficTypes);
 		comboBoxLightBlueCars = new JComboBox(trafficTypes);
@@ -119,6 +125,9 @@ public class Menu extends JPanel {
 		comboBoxMaxSpeed.setSelectedIndex(2);
 		comboBoxConditions = new JComboBox(conditionTypes);
 		comboBoxConditions.setSelectedIndex(1);
+
+		comboBoxChangeLight = new JComboBox<>(changeLight);
+		comboBoxChangeLight.setSelectedIndex(4);
 
 		sliderSimulationSleep = new JSlider(0, 100, 100);
 		sliderSimulationSleep.setPaintLabels(true);
@@ -160,14 +169,15 @@ public class Menu extends JPanel {
 
 		panelMenu.add(labelLeftCars);
 		panelMenu.add(textLeftCars);
-		
+
 		panelMenu.add(labelCarsOnCrossroad);
 		panelMenu.add(textCarsOnCrossroad);
 
 		panelMenu.add(labelAvgSpeed);
 		panelMenu.add(textAverageSpeed);
 
-
+		panelMenu.add(labelChangeLight);
+		panelMenu.add(comboBoxChangeLight);
 
 		board = new Board();
 		board.initialize(30, 30);
@@ -186,6 +196,7 @@ public class Menu extends JPanel {
 				pinkCars = comboBoxPinkCars.getSelectedIndex() + 1;
 				maxSpeed = comboBoxMaxSpeed.getSelectedIndex() + 1;
 				conditions = comboBoxConditions.getSelectedIndex() + 1;
+				changeLightFreq = comboBoxChangeLight.getSelectedIndex() + 1;
 				timer.start();
 			}
 		});
