@@ -8,15 +8,15 @@ public class Point {
 	private Integer dist;
 	private int type = 0;
 	private static int totalNumberOfCars;
-	private  int sumOfSpeeds;
-	private  int numOfSpeeds;
-	private  int avgSpeed;
+	private int sumOfSpeeds;
+	private int numOfSpeeds;
+	private int avgSpeed;
 
-	public  int getAvgSpeed() {
+	public int getAvgSpeed() {
 		return avgSpeed;
 	}
 
-	public  void setAvgSpeed(int avgSpeed) {
+	public void setAvgSpeed(int avgSpeed) {
 		this.avgSpeed = avgSpeed;
 	}
 
@@ -78,7 +78,7 @@ public class Point {
 	}
 
 	public void randomBrake() {
-		currSpeed = --currSpeed;
+		currSpeed = Math.max(0, currSpeed - 1);
 	}
 
 	public void brake(int x, int y, Point[][] points,
