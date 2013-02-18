@@ -3,6 +3,8 @@ package twoLaneCross;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -22,13 +24,13 @@ public class Board extends JPanel {
 	private static final int PINK_COL = 13;
 	private static final int BLUE_COL = 14;
 	private static final int LIGHT_BLUE_ROW = 14;
-	private static final int YELLOW_ROW = 15;
+	private static final int GRAY_ROW = 15;
 	private static int totalSpeed;
 	private static int totalGeneratedCars;
 	private Random rand = new Random();
 
 	// single iteration
-	public void iteration(int blueCars, int lightBlueCars, int yellowCars,
+	public void iteration(int blueCars, int lightBlueCars, int grayCars,
 			int pinkCars, int maxSpeed, int conditions, int changeLight) {
 		iteration++;
 
@@ -66,11 +68,11 @@ public class Board extends JPanel {
 				totalGeneratedCars++;
 			}
 
-			int yellowCol = 28;
-			for (int i = 0; i < yellowCars; i++) {
-				points[YELLOW_ROW][yellowCol].setSpeed(0);
-				points[YELLOW_ROW][yellowCol].setType(4);
-				yellowCol = yellowCol - 2;
+			int grayCol = 28;
+			for (int i = 0; i < grayCars; i++) {
+				points[GRAY_ROW][grayCol].setSpeed(0);
+				points[GRAY_ROW][grayCol].setType(4);
+				grayCol = grayCol - 2;
 				totalGeneratedCars++;
 			}
 
@@ -107,11 +109,11 @@ public class Board extends JPanel {
 			}
 
 		// movement
+		totalSpeed = 0;
 		for (int x = 0; x < points.length; ++x)
 			for (int y = 0; y < points[x].length; ++y) {
 				if (points[x][y].getSpeed() != null) {
 					int speed = points[x][y].getSpeed();
-					totalSpeed += points[x][y].getAvgSpeed();
 
 					points[x][y].setNextSpeed(null);
 					points[x][y].setDist(null);
@@ -149,6 +151,7 @@ public class Board extends JPanel {
 							speed = 0;
 						}
 					}
+					totalSpeed+=points[x][y].getSpeed();
 				}
 			}
 		for (int x = 0; x < points.length; ++x)
@@ -183,7 +186,7 @@ public class Board extends JPanel {
 		lights.add(new TrafficLights(14, 12, 6, 2, false));
 		// for pink cars
 		lights.add(new TrafficLights(16, 13, 6, 3, true));
-		// for yellow cars
+		// for gray cars
 		lights.add(new TrafficLights(15, 15, 6, 4, false));
 		// lights.add(new TrafficLights(15, 9, 4, 4, true));
 
@@ -292,5 +295,17 @@ public class Board extends JPanel {
 
 	public static void setTotalGeneratedCars(int totalGeneratedCars) {
 		Board.totalGeneratedCars = totalGeneratedCars;
+	}
+	
+	public static BigDecimal getAvgSpeed(){
+		BigDecimal avg = new BigDecimal(0);
+		if(totalGeneratedCars!=0)
+			avg = BigDecimal.valueOf(totalSpeed).divide(BigDecimal.valueOf(totalGeneratedCars-Point.getTotalNumberOfCars()), MathContext.DECIMAL32);
+		avg = avg.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return avg;
+	}
+	
+	public int getIteration(){
+		return iteration;
 	}
 }

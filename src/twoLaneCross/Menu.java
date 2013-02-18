@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -77,11 +78,7 @@ public class Menu extends JPanel {
 				board.iteration(blueCars, lightBlueCars, grayCars, pinkCars,
 						maxSpeed, conditions, changeLightFreq);
 				textLeftCars.setText(" " + Point.getTotalNumberOfCars());
-				if (Point.getTotalNumberOfCars() != 0)
-					textAverageSpeed.setText(" "
-							+ Board.getTotalSpeed()
-							/ (Point.getTotalNumberOfCars() + Board
-									.getTotalGeneratedCars()));
+				textAverageSpeed.setText(" " + Board.getAvgSpeed());
 				textCarsOnCrossroad.setText(" "
 						+ (Board.getTotalGeneratedCars() - Point
 								.getTotalNumberOfCars()));
@@ -126,7 +123,7 @@ public class Menu extends JPanel {
 		comboBoxConditions = new JComboBox(conditionTypes);
 		comboBoxConditions.setSelectedIndex(1);
 
-		comboBoxChangeLight = new JComboBox<>(changeLight);
+		comboBoxChangeLight = new JComboBox(changeLight);
 		comboBoxChangeLight.setSelectedIndex(4);
 
 		sliderSimulationSleep = new JSlider(1, 5, 1);
@@ -176,8 +173,8 @@ public class Menu extends JPanel {
 		panelMenu.add(labelCarsOnCrossroad);
 		panelMenu.add(textCarsOnCrossroad);
 
-		// panelMenu.add(labelAvgSpeed);
-		// panelMenu.add(textAverageSpeed);
+		 panelMenu.add(labelAvgSpeed);
+		 panelMenu.add(textAverageSpeed);
 
 		board = new Board();
 		board.initialize(30, 30);
